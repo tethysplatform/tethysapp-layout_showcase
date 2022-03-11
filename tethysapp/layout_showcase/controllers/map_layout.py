@@ -4,6 +4,7 @@ from pathlib import Path
 from urllib.parse import urlparse, urljoin
 
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from rest_framework.authtoken.models import Token
 
 from tethys_sdk.layouts import MapLayout
@@ -27,6 +28,7 @@ class MapLayoutShowcase(MapLayout):
     # template_name = 'temp_precip_trends/map_view.html'
     # base_template = 'temp_precip_trends/base.html'
     # sds_setting_name = app.SET_THREDDS_SDS_NAME  # TODO: Support multiple?
+    back_url = reverse_lazy('layout_showcase:quick_start')
     map_title = 'Map Layout'
     map_subtitle = 'Showcase'
     basemaps = [
@@ -78,7 +80,8 @@ class MapLayoutShowcase(MapLayout):
         # WMS Layer
         self.geoserver_workspace = 'topp'
         usa_population = self.build_wms_layer(
-            endpoint='http://192.168.1.58:8181/geoserver/wms',  # TODO: get this from app setting
+            # endpoint='http://192.168.1.58:8181/geoserver/wms',  # TODO: get this from app setting
+            endpoint='http://192.168.99.163:8181/geoserver/wms',  # TODO: get this from app setting
             layer_name='topp:states',
             layer_title="USA Population",
             layer_variable='population',

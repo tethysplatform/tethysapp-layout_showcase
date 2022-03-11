@@ -8,4 +8,6 @@
 *.sqlite
 *.DS_Store
 .idea/
+dist/
+build/
 services.yml

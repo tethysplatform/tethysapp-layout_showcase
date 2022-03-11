@@ -7,7 +7,7 @@ class LayoutShowcase(TethysAppBase):
     """
 
     name = 'Layout Showcase'
-    index = 'layout_showcase:quickstart'
+    index = 'layout_showcase:quick_start'
     icon = 'layout_showcase/images/icon.gif'
     package = 'layout_showcase'
     root_url = 'layout-showcase'
@@ -26,7 +26,7 @@ class LayoutShowcase(TethysAppBase):
 
         url_maps = (
             UrlMap(
-                name='quickstart',
+                name='quick_start',
                 url='layout-showcase',
                 controller='layout_showcase.controllers.quick_start.quick_start'
             ),
