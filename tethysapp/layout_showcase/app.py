@@ -7,7 +7,7 @@ class LayoutShowcase(TethysAppBase):
     """
 
     name = 'Layout Showcase'
-    index = 'layout_showcase:quick_start'
+    index = 'quick_start'
     icon = 'layout_showcase/images/icon.gif'
     package = 'layout_showcase'
     root_url = 'layout-showcase'
