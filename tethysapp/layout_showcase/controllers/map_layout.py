@@ -9,6 +9,7 @@ from rest_framework.authtoken.models import Token
 
 from tethys_sdk.layouts import MapLayout
 from tethys_sdk.workspaces import app_workspace
+from tethys_sdk.routing import controller
 
 from tethysapp.layout_showcase.app import LayoutShowcase as app
 
@@ -23,6 +24,10 @@ def get_app_workspace(request, app_workspace):  # pragma: no cover - simple retu
     return app_workspace
 
 
+@controller(
+    name="map_layout",
+    url="layout-showcase/map-layout"
+)
 class MapLayoutShowcase(MapLayout):
     app = app
     # template_name = 'temp_precip_trends/map_view.html'
@@ -80,8 +85,8 @@ class MapLayoutShowcase(MapLayout):
         # WMS Layer
         self.geoserver_workspace = 'topp'
         usa_population = self.build_wms_layer(
-            # endpoint='http://192.168.1.58:8181/geoserver/wms',  # TODO: get this from app setting
-            endpoint='http://192.168.99.163:8181/geoserver/wms',  # TODO: get this from app setting
+            endpoint='http://192.168.1.58:8181/geoserver/wms',  # TODO: get this from app setting
+            # endpoint='http://192.168.99.163:8181/geoserver/wms',  # TODO: get this from app setting
             layer_name='topp:states',
             layer_title="USA Population",
             layer_variable='population',

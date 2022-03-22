@@ -16,26 +16,3 @@ class LayoutShowcase(TethysAppBase):
     tags = ''
     enable_feedback = False
     feedback_emails = []
-
-    def url_maps(self):
-        """
-        Add controllers
-        """
-        from .controllers.map_layout import MapLayoutShowcase
-        UrlMap = url_map_maker(self.root_url)
-
-        url_maps = (
-            UrlMap(
-                name='quick_start',
-                url='layout-showcase',
-                controller='layout_showcase.controllers.quick_start.quick_start'
-            ),
-            UrlMap(
-                name='map_layout',
-                url='layout-showcase/map-layout',
-                controller=MapLayoutShowcase.as_controller()
-                # controller=login_required(MapLayoutShowcase.as_controller())
-            ),
-        )
-
-        return url_maps
