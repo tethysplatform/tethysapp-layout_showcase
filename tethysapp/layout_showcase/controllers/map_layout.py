@@ -36,11 +36,12 @@ class MapLayoutShowcase(MapLayout):
     default_zoom = 5
     max_zoom = 16
     min_zoom = 2
-    # plot_slide_sheet = True
     # show_legends = True
+    show_properties_popup = True  # Do not enable this and show_map_click_popup at the same time
+    feature_selection_multiselect = True
     # show_map_clicks = True
-    # show_map_click_popup = True
-    # show_properties_popup = True
+    # show_map_click_popup = True  # Do not enable this and show_properties_popup at the same time
+    plot_slide_sheet = True
     show_custom_layer = True
 
     def compose_layers(self, request, map_view, app_workspace, *args, **kwargs):
@@ -65,6 +66,8 @@ class MapLayoutShowcase(MapLayout):
             visible=False,
             selectable=True,
             geometry_attribute='the_geom',
+            excluded_properties=['STATE_FIPS', 'SUB_REGION'],
+            plottable=True,
         )
 
         # Load GeoJSON into Python objects from file
@@ -81,6 +84,7 @@ class MapLayoutShowcase(MapLayout):
             selectable=True,
             visible=True,
             extent=[-63.69, 12.81, -129.17, 49.38],
+            plottable=True,
         )
         
         # ArcGIS Layer
@@ -128,3 +132,97 @@ class MapLayoutShowcase(MapLayout):
                 }}
             }},
         }
+
+    def get_plot_for_layer_feature(self, layer_name, feature_id):
+        """
+        Retrieves plot data for given feature on given layer.
+
+        Args:
+            layer_name (str): Name/id of layer.
+            feature_id (str): ID of feature.
+
+        Returns:
+            str, list<dict>, dict: plot title, data series, and layout options, respectively.
+        """
+        # Define data
+        month = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+                'August', 'September', 'October', 'November', 'December']
+        high_2000 = [32.5, 37.6, 49.9, 53.0, 69.1, 75.4, 76.5, 76.6, 70.7, 60.6, 45.1, 29.3]
+        low_2000 = [13.8, 22.3, 32.5, 37.2, 49.9, 56.1, 57.7, 58.3, 51.2, 42.8, 31.6, 15.9]
+        high_2007 = [36.5, 26.6, 43.6, 52.3, 71.5, 81.4, 80.5, 82.2, 76.0, 67.3, 46.1, 35.0]
+        low_2007 = [23.6, 14.0, 27.0, 36.8, 47.6, 57.7, 58.9, 61.2, 53.3, 48.5, 31.0, 23.6]
+        high_2014 = [28.8, 28.5, 37.0, 56.8, 69.7, 79.7, 78.5, 77.8, 74.1, 62.6, 45.3, 39.9]
+        low_2014 = [12.7, 14.3, 18.6, 35.5, 49.9, 58.0, 60.0, 58.6, 51.7, 45.2, 32.2, 29.1]
+        
+        layout = {
+            'xaxis': {
+                'title': 'Month'
+            },
+            'yaxis': {
+                'title': 'Temperature (degrees F)'
+            }
+        }
+
+        data = [{
+                'name': 'High 2014',
+                'mode': 'lines',
+                'x': month,
+                'y': high_2014,
+                'line': {
+                    'dash': 'solid',
+                    'width': 4,
+                    'color': 'red'
+                }
+            }, {
+                'name': 'Low 2014',
+                'mode': 'lines',
+                'x': month,
+                'y': low_2014,
+                'line': {
+                    'dash': 'solid',
+                    'width': 4,
+                    'color': 'blue'
+                }
+            }, {
+                'name': 'High 2007',
+                'mode': 'lines',
+                'x': month,
+                'y': high_2007,
+                'line': {
+                    'dash': 'dash',
+                    'width': 4,
+                    'color': 'red'
+                }
+            }, {
+                'name': 'Low 2007',
+                'mode': 'lines',
+                'x': month,
+                'y': low_2007,
+                'line': {
+                    'dash': 'dash',
+                    'width': 4,
+                    'color': 'blue'
+                }
+            }, {
+                'name': 'High 2000',
+                'mode': 'lines',
+                'x': month,
+                'y': high_2000,
+                'line': {
+                    'dash': 'dot',
+                    'width': 4,
+                    'color': 'red'
+                }
+            }, {
+                'name': 'Low 2000',
+                'mode': 'lines',
+                'x': month,
+                'y': low_2000,
+                'line': {
+                    'dash': 'dot',
+                    'width': 4,
+                    'color': 'blue'
+                }
+            }
+        ]
+        return 'Average High and Low Temperatures', data, layout
