@@ -1,5 +1,5 @@
 from tethys_sdk.base import TethysAppBase, url_map_maker
-from tethys_sdk.app_settings import SpatialDatasetServiceSetting
+from tethys_sdk.app_settings import CustomSetting, SpatialDatasetServiceSetting
 
 
 class LayoutShowcase(TethysAppBase):
@@ -17,6 +17,17 @@ class LayoutShowcase(TethysAppBase):
     tags = ''
     enable_feedback = False
     feedback_emails = []
+
+    def custom_settings(self):
+        custom_settings = (
+            CustomSetting(
+                name='geocode_api_key',
+                type=CustomSetting.TYPE_STRING,
+                description='OpenCage Geocoding API Key for MapLayout address search.',
+                required=False
+            ),
+        )
+        return custom_settings
 
     def spatial_dataset_service_settings(self):
         sds_settings = (

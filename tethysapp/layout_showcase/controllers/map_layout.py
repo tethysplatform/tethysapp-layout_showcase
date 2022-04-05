@@ -5,10 +5,12 @@ from urllib.parse import urlparse, urljoin
 
 from django.http import JsonResponse
 from django.urls import reverse_lazy
+from django.contrib import messages
 from rest_framework.authtoken.models import Token
 
 from tethys_sdk.layouts import MapLayout
 from tethys_sdk.routing import controller
+from tethys_sdk.app_settings import TethysAppSettingNotAssigned
 
 from tethysapp.layout_showcase.app import LayoutShowcase as app
 
@@ -20,11 +22,9 @@ log = logging.getLogger(f'tethys.{__name__}')
     app_workspace=True,
 )
 class MapLayoutShowcase(MapLayout):
-    app = app
     template_name = 'layout_showcase/custom_map_layout.html'
+    app = app
     back_url = reverse_lazy('layout_showcase:quick_start')
-    map_title = 'Map Layout'
-    map_subtitle = 'Showcase'
     basemaps = [
         'OpenStreetMap',
         'ESRI',
@@ -32,43 +32,57 @@ class MapLayoutShowcase(MapLayout):
         {'Stamen': {'layer': 'toner', 'control_label': 'Black and White'}},
     ]
     default_center = [-98.583, 39.833]  # USA Center
-    initial_map_extent = [-65.69, 23.81, -129.17, 49.38]  # USA EPSG:2374
     default_zoom = 5
+    feature_selection_multiselect = True
+    geocode_extent = [-127.26563, 23.56399, -66.09375, 50.51343]
+    geoserver_workspace = 'topp'  # TODO: Generalize this out (only one workspace?)
+    initial_map_extent = [-127.26563, 23.56399, -66.09375, 50.51343]  # USA EPSG:4326
+    map_subtitle = 'Showcase'
+    map_title = 'Map Layout'
     max_zoom = 16
     min_zoom = 2
-    # show_legends = True
-    show_properties_popup = True  # Do not enable this and show_map_click_popup at the same time
-    feature_selection_multiselect = True
-    # show_map_clicks = True
-    # show_map_click_popup = True  # Do not enable this and show_properties_popup at the same time
     plot_slide_sheet = True
-    show_custom_layer = True
+    # show_map_clicks = True  # Can be enabled with feature selection
+    # show_map_click_popup = True  # Do not enable this and show_properties_popup at the same time
+    show_properties_popup = True  # Do not enable this and show_map_click_popup at the same time
+    
+    @property
+    def geocode_api_key(self):
+        if not getattr(self, '_geocode_api_key', None):
+            self._geocode_api_key = self.app.get_custom_setting('geocode_api_key')
+        return self._geocode_api_key
 
     def compose_layers(self, request, map_view, app_workspace, *args, **kwargs):
         """
         Add layers to the given MapView and create associated layer group objects.
         """
         # Get URL to GeoServer WMS Service from App Setting
-        geoserver_wms_url = self.app.get_spatial_dataset_service(
-            'primary_geoserver', 
-            as_public_endpoint=True,
-            as_wms=True
-        )
+        try:
+            geoserver_wms_url = self.app.get_spatial_dataset_service(
+                'primary_geoserver', 
+                as_public_endpoint=True,
+                as_wms=True
+            )
+            wms_configured = True
+        except TethysAppSettingNotAssigned:
+            wms_configured = False
+            messages.warning(request, 'Assign a GeoServer in app settings to see a WMS layer example.')
 
         # WMS Layer
-        self.geoserver_workspace = 'topp'
-        wms_layer = self.build_wms_layer(
-            endpoint=geoserver_wms_url,
-            server_type='geoserver',
-            layer_name='topp:states',
-            layer_title="WMS Layer",
-            layer_variable='population',
-            visible=False,
-            selectable=True,
-            geometry_attribute='the_geom',
-            excluded_properties=['STATE_FIPS', 'SUB_REGION'],
-            plottable=True,
-        )
+        wms_layer = None
+        if wms_configured:
+            wms_layer = self.build_wms_layer(
+                endpoint=geoserver_wms_url,
+                server_type='geoserver',
+                layer_name='topp:states',
+                layer_title="WMS Layer",
+                layer_variable='population',
+                visible=True,
+                selectable=True,
+                geometry_attribute='the_geom',
+                excluded_properties=['STATE_FIPS', 'SUB_REGION'],
+                plottable=True,
+            )
 
         # Load GeoJSON into Python objects from file
         us_states_path = Path(app_workspace.path) / 'map_layout' / 'us-states.json'
@@ -82,7 +96,7 @@ class MapLayoutShowcase(MapLayout):
             layer_title='GeoJSON Layer',
             layer_variable='reference',
             selectable=True,
-            visible=True,
+            visible=wms_layer is None,
             extent=[-63.69, 12.81, -129.17, 49.38],
             plottable=True,
         )
@@ -98,11 +112,12 @@ class MapLayoutShowcase(MapLayout):
         )
 
         # Add layers to map
-        map_view.layers.extend([
-            geojson_layer,
-            wms_layer,
-            arc_gis_layer,
-        ])
+        if wms_configured and wms_layer:
+            layers = [wms_layer, geojson_layer, arc_gis_layer]
+        else:
+            layers = [geojson_layer, arc_gis_layer]
+
+        map_view.layers.extend(layers)
 
         # Define the layer groups
         layer_groups = [
@@ -110,7 +125,7 @@ class MapLayoutShowcase(MapLayout):
                 id='usa-layer-group',
                 display_name='Layers',
                 layer_control='radio',
-                layers=[geojson_layer, wms_layer, arc_gis_layer],
+                layers=layers,
             ),
         ]
 
