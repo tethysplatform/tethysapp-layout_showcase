@@ -35,7 +35,7 @@ class MapLayoutShowcase(MapLayout):
     default_zoom = 5
     feature_selection_multiselect = True
     geocode_extent = [-127.26563, 23.56399, -66.09375, 50.51343]
-    geoserver_workspace = 'topp'  # TODO: Generalize this out (only one workspace?)
+    geoserver_workspace = 'topp'  # TODO: Generalize this out (more than one workspace?)
     initial_map_extent = [-127.26563, 23.56399, -66.09375, 50.51343]  # USA EPSG:4326
     map_subtitle = 'Showcase'
     map_title = 'Map Layout'
@@ -138,12 +138,18 @@ class MapLayoutShowcase(MapLayout):
                 'stroke': {'ol.style.Stroke': {
                     'color': 'orange',
                     'width': 3
+                }},
+                'fill': {'ol.style.Fill': {
+                    'color': 'rgba(255, 140, 0, 0.1)'
                 }}
             }},
             'Polygon': {'ol.style.Style': {
                 'stroke': {'ol.style.Stroke': {
-                    'color': 'blue',
+                    'color': 'green',
                     'width': 3
+                }},
+                'fill': {'ol.style.Fill': {
+                    'color': 'rgba(0, 255, 0, 0.1)'
                 }}
             }},
         }
