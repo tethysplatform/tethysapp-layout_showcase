@@ -1,4 +1,4 @@
-window.addEventListener('load', function() {  // wait for page to load
+$(function() {  // wait for page to load
     // Feature Selection Event Handler
     let selection_interaction = TETHYS_MAP_VIEW.getSelectInteraction();
 
