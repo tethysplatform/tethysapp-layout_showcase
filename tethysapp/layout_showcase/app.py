@@ -9,7 +9,7 @@ class LayoutShowcase(TethysAppBase):
 
     name = 'Layout Showcase'
     index = 'quick_start'
-    icon = 'layout_showcase/images/icon.gif'
+    icon = 'layout_showcase/images/geoprocessing.png'
     package = 'layout_showcase'
     root_url = 'layout-showcase'
     color = '#045c34'

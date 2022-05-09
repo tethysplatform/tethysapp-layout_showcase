@@ -8,6 +8,7 @@
 *.sqlite
 *.DS_Store
 .idea/
+.coverage
 dist/
 build/
 services.yml
