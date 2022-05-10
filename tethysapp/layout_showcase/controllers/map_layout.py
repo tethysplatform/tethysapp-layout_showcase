@@ -154,7 +154,7 @@ class MapLayoutShowcase(MapLayout):
             }},
         }
 
-    def get_plot_for_layer_feature(self, layer_name, feature_id):
+    def get_plot_for_layer_feature(self, request, layer_name, feature_id, *args, **kwargs):
         """
         Retrieves plot data for given feature on given layer.
 
