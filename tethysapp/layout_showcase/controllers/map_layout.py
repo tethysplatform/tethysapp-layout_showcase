@@ -117,8 +117,6 @@ class MapLayoutShowcase(MapLayout):
         else:
             layers = [geojson_layer, arc_gis_layer]
 
-        map_view.layers.extend(layers)
-
         # Define the layer groups
         layer_groups = [
             self.build_layer_group(
