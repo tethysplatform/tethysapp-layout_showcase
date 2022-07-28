@@ -1,11 +1,25 @@
 {% extends "layout_showcase/base.html" %}
-{% load tethys_gizmos %}
+{% load static tethys_gizmos %}
 
 {% block header_buttons %}
 {% endblock %}
 
 {% block app_content %}
   <h1>Quick Start</h1>
+  <p>A Layout is a full featured and customizable view for Tethys Apps. They are different from Template Gizmos, which are only small snippets of a page of that can be composed to create a full feature view. However, Layouts often use Gizmos behind the scenes. For example, the <a href="{% url 'layout_showcase:map_layout' %}">Map Layout</a> includes a fullscreen map with layer tree and includes advanced features like feature selection, properties popups, and click and plot (Figure 1). In addition, Layouts provide rich JavaScript APIs that allow you to access the internal data and customize the dynamic behavoir of the view.</p>
+  <img src="{% static 'layout_showcase/images/map_layout.png' %}" style="width: 800px;" class="mb-2">
+  <p><b>Figure 1.</b> Example of a Map Layout.</p>
+  <h2>Features</h2>
+  <p>Features of Layouts inlcude:</p>
+  <ul>
+    <li><b>Class-based Views:</b> Layouts are powered by Django Class-based views.</li>
+    <li><b>Inheritance:</b> Customizing a Layouts us accomplished by creating a subclass of the Layout class.</li>
+    <li><b>Configure via Properties:</b> Many features of Layouts can be easily turned on or off by setting class properties.</li>
+    <li><b>Customize Behavior via Hooks:</b> More complex customization is accomplished by overriding special methods called hooks.</li>
+    <li><b>Easy REST Endpoints:</b> Layouts provide an easy mechanism for creating API endpoints for the view without needing to create new controllers or define new URLs.</li>
+  </ul>
+  <h2>Documentation</h2>
+  <p>To learn more about Tethys Layouts and how to use them, see the <a target="_blank" href="http://docs.tethysplatform.org/en/latest/tethys_sdk/layouts.html">Layouts API Documentation</a>.</p>
 {% endblock %}
 
 {# Use the after_app_content block for modals #}
