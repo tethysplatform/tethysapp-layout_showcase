@@ -3,9 +3,9 @@ A Tethys app that demonstrates how to use Tethys Layouts.
 
 1. Install
 
-```
-tethys install
-```
+    ```
+    tethys install
+    ```
 
 2. OpenCage Geocoding API Key (Optional)
 
@@ -13,4 +13,4 @@ tethys install
 
 3. GeoServer (Optional)
 
-The Layout Showcase App has a Spatial Dataset Service Setting that can be used to link a GeoServer service to the app. When included, the Map Layout demo will display the US States layer hosted by GeoServer. Any GeoServer can be used, so long as it contains the demo layers. See [Assign Spatial Dataset Services](http://docs.tethysplatform.org/en/stable/tethys_sdk/tethys_services/spatial_dataset_services.html#assign-spatial-dataset-service) for how to add a GeoServer as a Spatial Dataset Service and link it to an app.
+    The Layout Showcase App has a Spatial Dataset Service Setting that can be used to link a GeoServer service to the app. When included, the Map Layout demo will display the US States layer hosted by GeoServer. Any GeoServer can be used, so long as it contains the demo layers. See [Assign Spatial Dataset Services](http://docs.tethysplatform.org/en/stable/tethys_sdk/tethys_services/spatial_dataset_services.html#assign-spatial-dataset-service) for how to add a GeoServer as a Spatial Dataset Service and link it to an app.
