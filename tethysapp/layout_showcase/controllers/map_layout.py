@@ -101,10 +101,10 @@ class MapLayoutShowcase(MapLayout):
         
         # ArcGIS Layer
         arc_gis_layer = self.build_arc_gis_layer(
-            endpoint='https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StateCityHighway_USA/MapServer',
-            layer_name='ESRI_StateCityHighway',
+            endpoint='https://sampleserver6.arcgisonline.com/arcgis/rest/services/NLCDLandCover2001/ImageServer',
+            layer_name='NLCDLandCover2001',
             layer_title='ArcGIS Layer',
-            layer_variable='highways',
+            layer_variable='landcover',
             visible=False,
             extent=[-173, 17, -65, 72],
         )
