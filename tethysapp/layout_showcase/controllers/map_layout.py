@@ -96,7 +96,6 @@ class MapLayoutShowcase(MapLayout):
             layer_variable='reference',
             selectable=True,
             visible=wms_layer is None,
-            extent=[-63.69, 12.81, -129.17, 49.38],
             plottable=True,
         )
         
