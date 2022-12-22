@@ -31,12 +31,10 @@ class MapLayoutShowcase(MapLayout):
         'Stamen',
         {'Stamen': {'layer': 'toner', 'control_label': 'Black and White'}},
     ]
-    default_center = [-98.583, 39.833]  # USA Center
-    default_zoom = 5
     feature_selection_multiselect = True
     geocode_extent = [-127.26563, 23.56399, -66.09375, 50.51343]
     geoserver_workspace = 'topp'  # TODO: Generalize this out (more than one workspace?)
-    initial_map_extent = [-127.26563, 23.56399, -66.09375, 50.51343]  # USA EPSG:4326
+    default_map_extent = [-127.26563, 23.56399, -66.09375, 50.51343]  # USA EPSG:4326
     map_subtitle = 'Showcase'
     map_title = 'Map Layout'
     max_zoom = 16
@@ -45,6 +43,7 @@ class MapLayoutShowcase(MapLayout):
     # show_map_clicks = True  # Can be enabled with feature selection
     # show_map_click_popup = True  # Do not enable this and show_properties_popup at the same time
     show_properties_popup = True  # Do not enable this and show_map_click_popup at the same time
+    show_custom_layer = True
     
     @property
     def geocode_api_key(self):
